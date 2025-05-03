@@ -46,7 +46,7 @@ const FormSuscripcion = () => {
     const fechaVencimiento = hoy.toISOString().split('T')[0];
 
     try {
-      await axios.post('http://localhost:3000/auth/suscripciones', {
+      await axios.post('https://kashhost.onrender.com/auth/suscripciones', {
         ...formData,
         usuario_id: userId,
         fechaVencimiento

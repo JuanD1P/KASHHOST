@@ -24,7 +24,7 @@ function Inicio() {
 
   const obtenerDatos = async () => {
     try {
-      const ingresoResponse = await axios.get(`http://localhost:3000/auth/usuarios/${userId}`);
+      const ingresoResponse = await axios.get(`https://kashhost.onrender.com/auth/usuarios/${userId}`);
       const ingresoActual = ingresoResponse.data.ingreso;
 
       if (ingresoActual == null || ingresoActual === 0) {
@@ -33,17 +33,17 @@ function Inicio() {
         setIngreso(ingresoActual);
       }
 
-      const suscripcionesResponse = await axios.get(`http://localhost:3000/auth/suscripciones/usuario/${userId}`);
+      const suscripcionesResponse = await axios.get(`https://kashhost.onrender.com/auth/suscripciones/usuario/${userId}`);
       setSuscripciones(suscripcionesResponse.data);
 
-      const gastosResponse = await axios.get(`http://localhost:3000/auth/total-gastos/usuario/${userId}`);
+      const gastosResponse = await axios.get(`https://kashhost.onrender.com/auth/total-gastos/usuario/${userId}`);
       if (gastosResponse.data.length > 0) {
         setTotalGastos(gastosResponse.data[0].total_gastos);
       } else {
         setTotalGastos(0);
       }
 
-      const balanceResponse = await axios.get(`http://localhost:3000/auth/balance/usuario/${userId}`);
+      const balanceResponse = await axios.get(`https://kashhost.onrender.com/auth/balance/usuario/${userId}`);
       if (balanceResponse.data.length > 0) {
         setBalance(balanceResponse.data[0].balance_disponible);
       } else {
@@ -73,7 +73,7 @@ function Inicio() {
     }
 
     try {
-      await axios.put(`http://localhost:3000/auth/usuarios/${userId}/ingreso`, { ingreso: nuevoIngreso });
+      await axios.put(`https://kashhost.onrender.com/auth/usuarios/${userId}/ingreso`, { ingreso: nuevoIngreso });
       alert('Ingreso actualizado correctamente');
       setIngreso(nuevoIngreso);
       setObligarIngreso(false);
@@ -87,7 +87,7 @@ function Inicio() {
     if (!window.confirm('¿Estás seguro de eliminar esta suscripción?')) return;
 
     try {
-      await axios.delete(`http://localhost:3000/auth/suscripciones/${idsusc}`);
+      await axios.delete(`https://kashhost.onrender.com/auth/suscripciones/${idsusc}`);
       alert('Suscripción eliminada correctamente');
       obtenerDatos();
     } catch (error) {
@@ -108,7 +108,7 @@ function Inicio() {
 
   const guardarEdicion = async () => {
     try {
-      await axios.put(`http://localhost:3000/auth/suscripciones/${editarId}`, formData);
+      await axios.put(`https://kashhost.onrender.com/auth/suscripciones/${editarId}`, formData);
       alert('Suscripción actualizada correctamente');
       setEditarId(null);
       obtenerDatos();

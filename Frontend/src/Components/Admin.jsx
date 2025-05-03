@@ -15,7 +15,7 @@ const Admin = () => {
 
     const obtenerUsuarios = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/auth/usuarios');
+            const response = await axios.get('https://kashhost.onrender.com/auth/usuarios');
             setUsuarios(response.data);
         } catch (error) {
             console.error("Error al obtener usuarios:", error);
@@ -25,7 +25,7 @@ const Admin = () => {
 
     const cambiarRol = async (id, nuevoRol) => {
         try {
-            await axios.put(`http://localhost:3000/auth/usuarios/${id}`, { rol: nuevoRol });
+            await axios.put(`https://kashhost.onrender.com/auth/usuarios/${id}`, { rol: nuevoRol });
             obtenerUsuarios();
         } catch (error) {
             console.error("Error al cambiar rol:", error);
@@ -36,7 +36,7 @@ const Admin = () => {
         if (!window.confirm("¿Estás seguro de que deseas eliminar este usuario?")) return;
 
         try {
-            await axios.delete(`http://localhost:3000/auth/usuarios/${id}`);
+            await axios.delete(`https://kashhost.onrender.com/auth/usuarios/${id}`);
             obtenerUsuarios();
         } catch (error) {
             console.error("Error al eliminar usuario:", error);
