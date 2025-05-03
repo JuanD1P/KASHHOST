@@ -1,0 +1,388 @@
+/* Estilos generales del contenedor */
+
+.info-dueno {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 300px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.info-dueno h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.info-dueno p {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #555;
+}
+
+.info-dueno strong {
+  color: #222;
+}
+
+.inicio-agenc-mascota-boton-Cancelar {
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.inicio-agenc-mascota-boton-Cancelar:hover {
+  background: #c9302c;
+}
+
+/* Efecto de fondo oscurecido cuando se muestra la info */
+body:has(.info-dueno) {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+
+
+
+.PCOntainersiu{
+  font-family: 'Arial', sans-serif;
+  background: url("../../ImagenesP/FondoAgenc.jpg");
+
+}
+.inicio-agenc-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Título principal */
+.inicio-agenc-titulo {
+  color: #333;
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  animation: slideInDown 1s ease-in-out;
+}
+
+/* Botón principal */
+.inicio-agenc-boton {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto;
+  padding: 12px;
+  background: linear-gradient(45deg, #0c0f5f, #001a35);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.logo {
+  width: 8.5%;
+  position: fixed;
+  top: 10px;
+  left: 10px; 
+  z-index: 9999; 
+  pointer-events: none;
+  display: block;
+
+}
+.inicio-agenc-boton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Contenedor de tarjetas de mascotas */
+.inicio-agenc-mascotas-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Tarjeta de mascota */
+.inicio-agenc-mascota-card {
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.inicio-agenc-mascota-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid #00153f;
+}
+
+/* Nombre de la mascota */
+.inicio-agenc-mascota-nombre {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Imagen de la mascota */
+.inicio-agenc-mascota-foto {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+}
+
+.inicio-agenc-mascota-foto:hover {
+  transform: scale(1.1);
+}
+
+/* Información de la mascota */
+.inicio-agenc-mascota-info {
+  color: #555;
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+/* Botones dentro de la tarjeta */
+.inicio-agenc-mascota-boton-Eliminar, 
+.inicio-agenc-mascota-boton-Modificar {
+  display: inline-block;
+  width: 45%;
+  margin: 10px 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.inicio-agenc-mascota-boton-Modificar {
+  background: linear-gradient(45deg, #143e1e, #02861e);
+  color: white;
+}
+
+.inicio-agenc-mascota-boton-Eliminar {
+  background: linear-gradient(45deg, #8f731c, #e0a800);
+  color: white;
+}
+
+.inicio-agenc-mascota-boton-Modificar:hover, 
+.inicio-agenc-mascota-boton-Eliminar:hover {
+  transform: scale(1.1);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .inicio-agenc-container {
+    padding: 15px;
+  }
+  
+  .inicio-agenc-mascotas-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .inicio-agenc-mascota-boton-Modificar, 
+  .inicio-agenc-mascota-boton-Eliminar {
+    width: 90%;
+  }
+}
+
+/* Contenedor de edición de mascota */
+.inicio-agenc-mascota-edicion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+/* Inputs de edición */
+.inicio-agenc-mascota-edicion input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Contenedor de la imagen */
+.inicio-agenc-mascota-foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Imagen de vista previa */
+.inicio-agenc-mascota-foto {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones de acción */
+.inicio-agenc-mascota-botones {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.inicio-agenc-mascota-boton-Guardar {
+  flex: 1;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.inicio-agenc-mascota-boton-Guardar:hover {
+  background: #218838;
+}
+
+.inicio-agenc-mascota-boton-Cancelar {
+  flex: 1;
+  padding: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  text-align: center;
+  margin-left: 5px;
+}
+
+.inicio-agenc-mascota-boton-Cancelar:hover {
+  background: #c82333;
+}
+
+/* Ajuste responsive */
+@media (max-width: 500px) {
+  .inicio-agenc-mascota-botones {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-contenido {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-cerrar {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* Estilos para la información del dueño */
+.info-dueno {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.inicio-agenc-mascota-boton-Cancelar {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.inicio-agenc-mascota-boton-Cancelar:hover {
+  background: #cc0000;
+}

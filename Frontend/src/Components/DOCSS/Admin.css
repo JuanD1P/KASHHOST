@@ -1,0 +1,196 @@
+/* Importar fuente estilizada */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+/* 🌍 Fondo adaptable */
+.PrincipalPP {
+    background: linear-gradient(to right, #67B6E0, #78C850);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+}
+
+/* 🎯 Contenedor Principal */
+.admin-container {
+    text-align: center;
+    padding: 2%;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* 🎨 Botón de Reportes */
+.admin-report-btn {
+    background: linear-gradient(to right, #FF9800, #FF5722);
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.admin-report-btn:hover {
+    background: linear-gradient(to right, #E68900, #E53935);
+    transform: scale(1.1);
+}
+
+/* 📌 Logo */
+.admin-logo {
+    width: 15%;
+    max-width: 180px;
+    margin-bottom: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* 🏆 Título */
+.admin-title {
+    font-size: 2.5em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #ffcc00;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    animation: slideDown 1.2s ease-in-out;
+}
+
+/* 📊 Contenedor de Tablas con Grid */
+.admin-tables-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en PC */
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+/* 📋 Estilo para las Tablas */
+.admin-table {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%; /* Para que ocupe toda la celda del grid */
+    border-collapse: collapse;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1.5s ease-in-out;
+}
+
+/* 📝 Estilos de Encabezado de Tabla */
+.admin-table thead {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.admin-table th {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 📌 Estilos de Celdas */
+.admin-table td {
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 🌟 Efecto Hover en Filas */
+.admin-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transition: 0.3s ease-in-out;
+}
+
+/* 🔽 Select de Roles */
+.admin-role-select {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #333;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+.admin-role-select:hover {
+    background: #f1f1f1;
+}
+
+/* ❌ Botón de eliminación */
+.admin-delete-btn {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-delete-btn:hover {
+    background: #e63939;
+    transform: scale(1.1);
+}
+
+/* 🎭 Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🛠️ RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .admin-tables-container {
+        grid-template-columns: 1fr; /* Solo 1 columna en móviles */
+    }
+
+    .admin-table {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
