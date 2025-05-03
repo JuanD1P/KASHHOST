@@ -8,16 +8,41 @@ const router = express.Router();
 //_____________________________________________________________________________________________________
 // 🚀 REGISTRO
 //_____________________________________________________________________________________________________
-router.post('/register', (req, res) => {
-    const { email, password, nombre_completo } = req.body;
+router.post('/register', async (req, res) => {
+  const { email, password, nombre_completo, direccion, telefono, rol } = req.body;
 
-    con.query("CALL registrar_usuario(?, ?, ?)", [nombre_completo, email, password], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(400).json({ registrationStatus: false, Error: err.sqlMessage });
-        }
-        return res.json({ registrationStatus: true, message: "Usuario registrado correctamente" });
-    });
+  if (!email || !password || !nombre_completo || !rol) {
+      return res.json({ registrationStatus: false, Error: "Faltan datos" });
+  }
+
+  try {
+      con.query("SELECT * FROM usuarios WHERE email = ?", [email], async (err, result) => {
+          if (err) {
+              console.error("Error en la consulta:", err);
+              return res.json({ registrationStatus: false, Error: "Error en la base de datos" });
+          }
+          if (result.length > 0) {
+              return res.json({ registrationStatus: false, Error: "El email ya está registrado" });
+          }
+
+          // Encriptar la contraseña
+          const hashedPassword = await bcrypt.hash(password, 10);
+
+          // Insertar usuario con el rol seleccionado
+          const sql = "INSERT INTO usuarios (email, password, nombre_completo, direccion, telefono, rol) VALUES (?, ?, ?, ?, ?, ?)";
+          con.query(sql, [email, hashedPassword, nombre_completo, direccion || null, telefono || null, rol], (err, result) => {
+              if (err) {
+                  console.error("Error al insertar usuario:", err);
+                  return res.json({ registrationStatus: false, Error: "Error de inserción" });
+              }
+              console.log("Usuario registrado correctamente");
+              return res.json({ registrationStatus: true });
+          });
+      });
+  } catch (error) {
+      console.error("Error en el registro:", error);
+      res.status(500).json({ registrationStatus: false, Error: "Error interno" });
+  }
 });
 
 //_____________________________________________________________________________________________________
