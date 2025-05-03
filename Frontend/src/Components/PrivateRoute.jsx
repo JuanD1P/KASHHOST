@@ -1,22 +1,25 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('auth-token');
-    let role = localStorage.getItem('user-role');
-    let id = localStorage.getItem('id');
+    const role = localStorage.getItem('user-role');
 
-    console.log("Token:", token);
-    console.log("Role:", role);
-    console.log("Allowed Roles:", allowedRoles);
-    console.log("id", id)
+    const navigate = useNavigate();
 
-    if (!token || !role || !allowedRoles.map(r => r.toUpperCase()).includes(role.toUpperCase())) {
-        console.warn("⚠️ Acceso denegado. Redirigiendo a /userlogin");
-        return <Navigate to="/userlogin" />;
+    useEffect(() => {
+        if (!token || !allowedRoles.includes(role)) {
+            console.warn("Acceso denegado. Volviendo a la página anterior...");
+            navigate(-1); 
+        }
+    }, [token, role, allowedRoles, navigate]);
+
+    if (!token || !allowedRoles.includes(role)) {
+        return null; 
     }
 
     return children;
 };
 
 export default PrivateRoute;
+

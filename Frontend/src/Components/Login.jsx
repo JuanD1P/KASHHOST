@@ -10,78 +10,64 @@ const Login = () => {
         password: ''
     });
     const [error, setError] = useState(null);
+    const [termsAccepted, setTermsAccepted] = useState(false);
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
-
-    useEffect(() => {
-        console.log("Cerrando sesión...");
-        localStorage.removeItem("auth-token");
-        localStorage.removeItem("user-role");
-        localStorage.removeItem("id"); 
-    }, []);
-
-    useEffect(() => {
-        // Verifica si el ID del usuario se almacenó correctamente
-        const storedUserId = localStorage.getItem("id");
-        if (storedUserId) {
-            console.log("🔹 ID del usuario almacenado en localStorage:", storedUserId);
-        }
-    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         setError(null);
-
+    
         if (!values.email || !values.password) {
             setError('Todos los campos deben ser completados');
             return;
         }
-
-        axios.post('https://kashhost.onrender.com/auth/userlogin', values, {
-            withCredentials: true,})
+    
+        axios.post('http://localhost:3000/auth/userlogin', values)
         .then(result => {
-            console.log("✅ Respuesta del backend:", result.data);
-
+            console.log("Respuesta del backend:", result.data);
+    
             if (result.data.loginStatus) {
-                if (result.data.token) {
+                if (result.data.token) {  
                     localStorage.setItem('auth-token', result.data.token);
                 }
                 localStorage.setItem('user-role', result.data.role);
-                
-                if (result.data.id) {  // Verifica si el backend envía el ID
-                    localStorage.setItem('id', result.data.id);
-                    console.log("🆔 ID guardado correctamente:", localStorage.getItem("id"));
-                } else {
-                    console.warn("⚠️ No se recibió el ID del usuario en la respuesta del backend.");
+    
+                if (result.data.id) {
+                    localStorage.setItem('user-id', result.data.id);  // 👉 Guardamos el id
                 }
-
-                console.log("🔑 Token guardado:", localStorage.getItem("auth-token"));
-                console.log("🎭 Rol guardado:", localStorage.getItem("user-role"));
-
+    
+                console.log("Token guardado:", localStorage.getItem("auth-token"));
+                console.log("Rol guardado:", localStorage.getItem("user-role"));
+                console.log("ID guardado:", localStorage.getItem("user-id"));  // 👉 Mostramos el id
+    
                 if (result.data.role === 'USER') {
                     navigate('/Inicio');
+                   
                 } else if (result.data.role === 'ADMIN') {
                     navigate('/Admin');
-                } else if (result.data.role === 'AGENC') {
-                    navigate('/InicioAGENC');
+                
                 }
             } else {
                 setError(result.data.Error);
             }
         })
         .catch(err => {
-            console.error("❌ Error en la petición:", err);
-            setError("Error en el servidor. Inténtalo de nuevo.");
+            console.error("Error en la petición:", err);
+            setError("Error en los datos, intente de nuevo");
         });
     };
-
+    
+    
     return (
         <div className="LoginPcontainer">
+            
             <div className='LoginScontainer'>
-                <img src={logo} alt="Logo" className="logoLogin" />
+        
                 <div className={`text-dangerLogin ${error ? 'show' : ''}`}>
                     {error && error}
                 </div>
+                <h2>LOGIN</h2>
                 <form onSubmit={handleSubmit} className='formularioLogin'>
                     <div className='form1'>
                         <label htmlFor='email'><strong>Email</strong></label>
@@ -105,9 +91,9 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className='boton2'>Ingresa</button>
+                    <button type="submit"  className='botonLogin1'>Ingresa</button>
                 </form>
-                <button onClick={() => navigate('/Registro')} className='botonLogin1'>No tienes una cuenta? REGÍSTRATE</button>
+                <button onClick={() => navigate('/Registro')} className='botonLogin1'>Ir a Registro</button>
             </div>
         </div>
     );

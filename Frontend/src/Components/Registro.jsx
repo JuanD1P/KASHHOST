@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import './DOCSS/Registro.css';
-import logo from '../ImagenesP/ImagenesLogin/LOGOPETHOME.png';
+
+
 
 const Registro = () => {
     const [values, setValues] = useState({
         nombre_completo: '',
-        direccion: '',
-        telefono: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        rol: 'USER'
+        confirmPassword: ''
     });
-
 
     const [error, setError] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
@@ -29,17 +25,12 @@ const Registro = () => {
 
         // Validaciones de campos
         if (!values.nombre_completo || !values.email || !values.password || !values.confirmPassword) {
-            setError("Todos los campos obligatorios deben llenarse");
+            setError("Todos los campos son obligatorios");
             return;
         }
 
-        if (values.rol === 'AGENC' && (!values.direccion || !values.telefono)) {
-            setError("Los campos Dirección y Teléfono son obligatorios para agencias");
-            return;
-        }
-
-        if (values.password.length < 6) {
-            setError("La contraseña debe tener al menos 6 caracteres");
+        if (values.password.length < 8) {
+            setError("La contraseña debe tener al menos 8 caracteres");
             return;
         }
 
@@ -50,15 +41,12 @@ const Registro = () => {
 
         const dataToSend = {
             nombre_completo: values.nombre_completo,
-            direccion: values.rol === 'AGENC' ? values.direccion : null,
-            telefono: values.rol === 'AGENC' ? values.telefono : null,
             email: values.email,
-            password: values.password,
-            rol: values.rol
+            password: values.password
         };
 
         try {
-            const result = await axios.post('https://kashhost.onrender.com/auth/register', dataToSend);
+            const result = await axios.post('http://localhost:3000/auth/register', dataToSend);
             if (result.data.registrationStatus) {
                 alert("Registro exitoso");
                 navigate('/userlogin');
@@ -73,23 +61,17 @@ const Registro = () => {
 
     return (
         <div className="registro-container">
+            
+
             {error && <div className='error-message'>{error}</div>}
 
             <form onSubmit={handleSubmit} className='form-container'>
                 <div>
-                    <img src={logo} alt="Logo" className="logoLogin" />
-                    <h2>Página de Registro</h2>
+                
+                <h2>Página de Registro</h2>
+                
                 </div>
-
-                <div className="select-container">
-                    <label>Rol:</label>
-                    <select value={values.rol} onChange={(e) => setValues({ ...values, rol: e.target.value })}>
-                        <option value="USER">Usuario</option>
-                        <option value="AGENC">Agencia</option>
-                    </select>
-                </div>
-
-                <div></div>
+                
                 <label>Nombre Completo</label>
                 <input 
                     type="text"
@@ -97,26 +79,6 @@ const Registro = () => {
                     onChange={(e) => setValues({ ...values, nombre_completo: e.target.value })} 
                     required
                 />
-
-                {values.rol === 'AGENC' && (
-                    <>
-                        <label>Dirección</label>
-                        <input 
-                            type="text"
-                            value={values.direccion}
-                            onChange={(e) => setValues({ ...values, direccion: e.target.value })} 
-                            required={values.rol === 'AGENC'}
-                        />
-
-                        <label>Teléfono</label>
-                        <input 
-                            type="tel"
-                            value={values.telefono}
-                            onChange={(e) => setValues({ ...values, telefono: e.target.value })} 
-                            required={values.rol === 'AGENC'}
-                        />
-                    </>
-                )}
 
                 <label>Email</label>
                 <input 
@@ -159,6 +121,7 @@ const Registro = () => {
                 </div>
 
                 <button type="submit">Registrarse</button>
+                <button onClick={() => navigate('/')} className='botonLogin1'>Ir a Login</button>
             </form>
         </div>
     );
