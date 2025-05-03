@@ -11,7 +11,7 @@ function InicioMascotas() {
   const [mostrandoInfo, setMostrandoInfo] = useState(null);
 
   useEffect(() => {
-    axios.get("https://hostingv1.onrender.com/auth/mascotas/todas")
+    axios.get("https://kashhost.onrender.com/auth/mascotas/todas")
       .then(response => {
         setMascotas(response.data);
       })

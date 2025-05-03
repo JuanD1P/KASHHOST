@@ -67,7 +67,7 @@ const RegistroMascota = () => {
         }
 
         try {
-            const response = await axios.post('https://hostingv1.onrender.com/auth/mascotas', values);
+            const response = await axios.post('https://kashhost.onrender.com/auth/mascotas', values);
             console.log(response.data);
             setSuccessMessage("🎉 ¡Mascota registrada exitosamente! 🎉");
             

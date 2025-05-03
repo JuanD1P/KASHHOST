@@ -58,7 +58,7 @@ const GenerarReporteUnico = () => {
     }
 
     try {
-      const response = await axios.post('https://hostingv1.onrender.com/auth/reporte', values);
+      const response = await axios.post('https://kashhost.onrender.com/auth/reporte', values);
       console.log(response.data);
       setSuccessMessage("🎉 ¡Reporte enviado exitosamente! 🎉");
 

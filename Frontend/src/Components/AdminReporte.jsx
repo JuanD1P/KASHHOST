@@ -12,7 +12,7 @@ const AdminReporte = () => {
   useEffect(() => {
     const fetchReportes = async () => {
       try {
-        const response = await axios.get(`https://hostingv1.onrender.com/auth/reporte`);
+        const response = await axios.get(`https://kashhost.onrender.com/auth/reporte`);
         setReportes(response.data);
         setError(null);
       } catch (error) {
@@ -26,7 +26,7 @@ const AdminReporte = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://hostingv1.onrender.com/auth/reporte/${id}`);
+      await axios.delete(`https://kashhost.onrender.com/auth/reporte/${id}`);
       setReportes(prevReportes => prevReportes.filter(reporte => reporte.id !== id));
     } catch (error) {
       console.error("Error al eliminar el reporte:", error);
