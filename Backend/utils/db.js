@@ -3,10 +3,10 @@ import nodemailer from 'nodemailer';
 import cron from 'node-cron';
 
 const con = mysql.createConnection({
-    host: 'b689gmshx1agzwefaeic-mysql.services.clever-cloud.com', 
-    user: 'uey9hh3tebppi5te',
-    password: 'SA9pwuFPP9QoNalVWuFn',
-    database: 'b689gmshx1agzwefaeic',
+    host: 'bigynkkuuwjobehee9hq-mysql.services.clever-cloud.com', 
+    user: 'un7o6diwmunexpkw',
+    password: 'fBBa4SgOmZffDC2WKewL',
+    database: 'bigynkkuuwjobehee9hq',
     port: 3306 
   });
 
