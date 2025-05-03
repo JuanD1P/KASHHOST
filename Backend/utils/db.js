@@ -2,6 +2,7 @@ import mysql from 'mysql2';
 import nodemailer from 'nodemailer';
 import cron from 'node-cron';
 
+
 const con = mysql.createConnection({
     host: 'bigynkkuuwjobehee9hq-mysql.services.clever-cloud.com', 
     user: 'un7o6diwmunexpkw',
@@ -9,8 +10,8 @@ const con = mysql.createConnection({
     database: 'bigynkkuuwjobehee9hq',
     port: 3306 
   });
-  
-  con.connect((err) => {
+
+con.connect((err) => {
     if (err) {
         console.log("❌ Conexión errónea:", err);
     } else {
