@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://hostingv-1.vercel.app"], // Agrega el dominio de Vercel
+    origin: ["http://localhost:5173", "https://kashhost-three.vercel.app/"], // Dominio del frontend Vercel
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
