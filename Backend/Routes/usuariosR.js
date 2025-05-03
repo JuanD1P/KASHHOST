@@ -1,6 +1,7 @@
 import express from 'express';
 import con from '../utils/db.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 
 const router = express.Router();
@@ -9,7 +10,7 @@ const router = express.Router();
 // 🚀 REGISTRO
 //_____________________________________________________________________________________________________
 router.post('/register', async (req, res) => {
-  const { email, password, nombre_completo, direccion, telefono, rol } = req.body;
+  const { email, password, nombre_completo, rol } = req.body;
 
   if (!email || !password || !nombre_completo || !rol) {
       return res.json({ registrationStatus: false, Error: "Faltan datos" });
@@ -29,7 +30,7 @@ router.post('/register', async (req, res) => {
           const hashedPassword = await bcrypt.hash(password, 10);
 
           // Insertar usuario con el rol seleccionado
-          const sql = "INSERT INTO usuarios (email, password, nombre_completo, direccion, telefono, rol) VALUES (?, ?, ?, ?, ?, ?)";
+          const sql = "INSERT INTO usuarios (email, password, nombre_completo, rol) VALUES (?, ?, ?, ?)";
           con.query(sql, [email, hashedPassword, nombre_completo, direccion || null, telefono || null, rol], (err, result) => {
               if (err) {
                   console.error("Error al insertar usuario:", err);
