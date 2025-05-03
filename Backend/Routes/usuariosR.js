@@ -13,9 +13,9 @@ const router = express.Router();
 
 // 🚀 REGISTRO DE USUARIOS
 router.post('/register', async (req, res) => {
-    const { email, password, nombre_completo, direccion, telefono, rol } = req.body;
+    const { email, password, nombre_completo } = req.body;
 
-    if (!email || !password || !nombre_completo || !rol) {
+    if (!email || !password || !nombre_completo) {
         return res.json({ registrationStatus: false, Error: "Faltan datos" });
     }
 
@@ -32,9 +32,9 @@ router.post('/register', async (req, res) => {
             // Encriptar la contraseña
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // Insertar usuario con el rol seleccionado
-            const sql = "INSERT INTO usuarios (email, password, nombre_completo, direccion, telefono, rol) VALUES (?, ?, ?, ?, ?, ?)";
-            con.query(sql, [email, hashedPassword, nombre_completo, direccion || null, telefono || null, rol], (err, result) => {
+            // Insertar usuario con rol 'USER' por defecto
+            const sql = "INSERT INTO usuarios (email, password, nombre_completo, rol) VALUES (?, ?, ?, 'USER')";
+            con.query(sql, [email, hashedPassword, nombre_completo], (err, result) => {
                 if (err) {
                     console.error("Error al insertar usuario:", err);
                     return res.json({ registrationStatus: false, Error: "Error de inserción" });
@@ -43,6 +43,7 @@ router.post('/register', async (req, res) => {
                 return res.json({ registrationStatus: true });
             });
         });
+
     } catch (error) {
         console.error("Error en el registro:", error);
         res.status(500).json({ registrationStatus: false, Error: "Error interno" });
@@ -71,13 +72,9 @@ router.post('/userlogin', (req, res) => {
 
             // Crear el token con el rol
             const token = jwt.sign({ role: result[0].rol, email: email }, "jwt_secret_key", { expiresIn: '1d' });
-
-            console.log("✅ Usuario autenticado:", result[0].email, "Rol:", result[0].rol, "ID:", result[0].id);
-
-            res.cookie('token', token, { httpOnly: true });
-
-            // 🔹 Ahora también enviamos el ID del usuario en la respuesta
-            return res.json({ loginStatus: true, role: result[0].rol, token, id: result[0].id });
+            
+            res.cookie('token', token, { httpOnly: true }); // Opción para cookies seguras
+            return res.json({ loginStatus: true, role: result[0].rol, token }); // ⬅ Ahora enviamos el token también
 
         } catch (error) {
             console.error("❌ Error en login:", error);
