@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import logo from '../ImagenesP/ImagenesLogin/LOGOPETHOME.png';
+import logo from '../ImagenesP/ImagenesLogin/Logo.png';
 import './DOCSS/Login.css';
 
 const Login = () => {
@@ -34,12 +34,13 @@ const Login = () => {
                 localStorage.setItem('user-role', result.data.role);
     
                 if (result.data.id) {
-                    localStorage.setItem('user-id', result.data.id);  // 👉 Guardamos el id
+                    localStorage.setItem('user-id', result.data.id); 
                 }
+                
     
                 console.log("Token guardado:", localStorage.getItem("auth-token"));
                 console.log("Rol guardado:", localStorage.getItem("user-role"));
-                console.log("ID guardado:", localStorage.getItem("user-id"));  // 👉 Mostramos el id
+                console.log("ID guardado:", localStorage.getItem("user-id"));
     
                 if (result.data.role === 'USER') {
                     navigate('/Inicio');
@@ -60,6 +61,10 @@ const Login = () => {
     
     
     return (
+        <div>
+        <div className="logoTopRight">
+            <img src={logo} alt="Logo" />
+        </div>
         <div className="LoginPcontainer">
             
             <div className='LoginScontainer'>
@@ -67,7 +72,7 @@ const Login = () => {
                 <div className={`text-dangerLogin ${error ? 'show' : ''}`}>
                     {error && error}
                 </div>
-                <h2>LOGIN</h2>
+                <h2><strong>Inicia Sesion</strong></h2>
                 <form onSubmit={handleSubmit} className='formularioLogin'>
                     <div className='form1'>
                         <label htmlFor='email'><strong>Email</strong></label>
@@ -91,10 +96,11 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit"  className='botonLogin1'>Ingresa</button>
+                    <button type="submit" className='botonLogin1'>Ingresa</button>
                 </form>
                 <button onClick={() => navigate('/Registro')} className='botonLogin1'>Ir a Registro</button>
             </div>
+        </div>
         </div>
     );
 };

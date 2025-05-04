@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './DOCSS/Form.css';
 
 const FormSuscripcion = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombresus: '',
     monto: '',
@@ -40,7 +42,6 @@ const FormSuscripcion = () => {
       return;
     }
 
-    // Calcular fecha de vencimiento
     const hoy = new Date();
     hoy.setDate(hoy.getDate() + parseInt(formData.diasSus)); 
     const fechaVencimiento = hoy.toISOString().split('T')[0];
@@ -60,10 +61,9 @@ const FormSuscripcion = () => {
   };
 
   return (
-    <div>
+    <div className="form-sus-container">
       <h2>Agregar Suscripción</h2>
       <form onSubmit={handleSubmit}>
-        
         <input
           type="text"
           name="nombresus"
@@ -72,8 +72,7 @@ const FormSuscripcion = () => {
           onChange={handleChange}
           required
         />
-        <br />
-
+  
         <input
           type="number"
           name="monto"
@@ -82,8 +81,7 @@ const FormSuscripcion = () => {
           onChange={handleChange}
           required
         />
-        <br />
-
+  
         <input
           type="number"
           name="diasSus"
@@ -92,8 +90,7 @@ const FormSuscripcion = () => {
           onChange={handleChange}
           required
         />
-        <br />
-
+  
         <select
           name="categoria"
           value={formData.categoria}
@@ -105,13 +102,19 @@ const FormSuscripcion = () => {
             <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
-        <br />
-
+  
         <button type="submit">Agregar Suscripción</button>
-        <button onClick={() => navigate('/Inicio')} className='botonLogin1'>Volver</button>
+        <button
+    type="button"
+    onClick={() => navigate(-1)}
+    className="boton-volver"
+  >
+    ← Volver
+  </button>
       </form>
     </div>
   );
+  
 };
 
 export default FormSuscripcion;

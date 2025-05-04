@@ -2,7 +2,6 @@ import mysql from 'mysql2';
 import nodemailer from 'nodemailer';
 import cron from 'node-cron';
 
-
 const con = mysql.createConnection({
     host: 'bigynkkuuwjobehee9hq-mysql.services.clever-cloud.com', 
     user: 'un7o6diwmunexpkw',
@@ -19,7 +18,6 @@ con.connect((err) => {
     }
 });
 
-
 // Transportador de correo 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -32,6 +30,77 @@ const transporter = nodemailer.createTransport({
 cron.schedule('0 0 * * *', () => {
     console.log("Ejecutando cronjob... Enviando correos a los usuarios...");
     
+    // Consulta para usuarios que han alcanzado o superado el 90% de su ingreso
+con.query("SELECT * FROM vista_usuarios_al_limite_gastos", (err, results) => {
+    if (err) {
+        return console.error("Error consultando la vista de gastos al límite:", err);
+    }
+
+    results.forEach((usuario) => {
+        const mailOptions = {
+            from: '"Tu App Financiera Kash" <contacto.coneycloud@gmail.com>',
+            to: usuario.email,
+            subject: '🚨 Estás alcanzando tu límite de gastos',
+            html: `
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #fff6f6;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            background-color: #fff;
+                            border: 2px solid #f44336;
+                            border-radius: 8px;
+                        }
+                        h2 {
+                            color: #f44336;
+                        }
+                        p {
+                            font-size: 16px;
+                        }
+                        .alert {
+                            font-weight: bold;
+                            color: #d32f2f;
+                        }
+                        .footer {
+                            text-align: center;
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color: #777;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h2>¡Atención ${usuario.nombre_completo}!</h2>
+                        <p class="alert">Has alcanzado mas del <strong>90%</strong> de tus ingresos mensuales.</p>
+                        <p>Esto significa que estás cerca de superar tu límite presupuestado. Te sugerimos revisar tus gastos y hacer los ajustes necesarios.</p>
+                        
+                        <p>Total gastos: <strong>$${usuario.total_gastos}</strong></p>
+                        <p class="footer">Tu equipo financiero Kash</p>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.error(`❌ Error enviando advertencia de gasto a ${usuario.email}:`, error);
+            }
+            console.log(`✅ Correo de advertencia enviado a ${usuario.email}: ${info.response}`);
+        });
+    });
+});
+
     con.query("SELECT * FROM vista_gastos_a_vencer", (err, results) => {
         if (err) {
             return console.error("Error consultando la vista:", err);
@@ -128,6 +197,4 @@ cron.schedule('0 0 * * *', () => {
         });
     });
 });
-
-
 export default con;

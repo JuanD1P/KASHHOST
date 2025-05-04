@@ -1,0 +1,91 @@
+/* Container con estilo de tarjeta */
+.form-sus-container {
+    max-width: 500px;
+    margin: 3rem auto;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, #edf2fb, #dbe2ef);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideUp 0.6s ease;
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+  
+  .form-sus-container h2 {
+    text-align: center;
+    color: #112d4e;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  /* Inputs & Select */
+  .form-sus-container input,
+  .form-sus-container select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #cbd5e0;
+    font-size: 1rem;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.2rem;
+  }
+  
+  .form-sus-container input:focus,
+  .form-sus-container select:focus {
+    outline: none;
+    border-color: #3f72af;
+    box-shadow: 0 0 0 3px rgba(63, 114, 175, 0.2);
+  }
+  
+  /* Botones personalizados */
+  .form-sus-container button {
+    width: 100%;
+    padding: 0.8rem;
+    font-weight: bold;
+    border-radius: 12px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  
+  .form-sus-container button[type="submit"] {
+    background: linear-gradient(135deg, #3f72af, #2b5876);
+    color: white;
+    margin-bottom: 0.7rem;
+  }
+  
+  .form-sus-container .botonLogin1 {
+    background: #112d4e;
+    color: white;
+  }
+  
+  .form-sus-container button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .form-sus-container {
+      padding: 1.5rem;
+    }
+  
+    .form-sus-container h2 {
+      font-size: 1.5rem;
+    }
+  }
+  

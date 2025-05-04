@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie
+} from 'recharts';
+import './DOCSS/Inicio.css';
 
 function Inicio() {
   const navigate = useNavigate();
@@ -18,7 +30,7 @@ function Inicio() {
   });
   const [totalGastos, setTotalGastos] = useState(0);
   const [balance, setBalance] = useState(0);
-  const [mostrarResumen, setMostrarResumen] = useState(false); // 👈 nuevo estado
+  const [mostrarResumen, setMostrarResumen] = useState(false);
 
   const userId = localStorage.getItem('user-id');
 
@@ -27,28 +39,18 @@ function Inicio() {
       const ingresoResponse = await axios.get(`https://kashhost.onrender.com/auth/usuarios/${userId}`);
       const ingresoActual = ingresoResponse.data.ingreso;
 
-      if (ingresoActual == null || ingresoActual === 0) {
-        setObligarIngreso(true);
-      } else {
-        setIngreso(ingresoActual);
-      }
+      if (!ingresoActual) setObligarIngreso(true);
+      else setIngreso(ingresoActual);
 
-      const suscripcionesResponse = await axios.get(`https://kashhost.onrender.com/auth/suscripciones/usuario/${userId}`);
-      setSuscripciones(suscripcionesResponse.data);
+      const [susRes, gastosRes, balRes] = await Promise.all([
+        axios.get(`https://kashhost.onrender.com/auth/suscripciones/usuario/${userId}`),
+        axios.get(`https://kashhost.onrender.com/auth/total-gastos/usuario/${userId}`),
+        axios.get(`https://kashhost.onrender.com/auth/balance/usuario/${userId}`)
+      ]);
 
-      const gastosResponse = await axios.get(`https://kashhost.onrender.com/auth/total-gastos/usuario/${userId}`);
-      if (gastosResponse.data.length > 0) {
-        setTotalGastos(gastosResponse.data[0].total_gastos);
-      } else {
-        setTotalGastos(0);
-      }
-
-      const balanceResponse = await axios.get(`https://kashhost.onrender.com/auth/balance/usuario/${userId}`);
-      if (balanceResponse.data.length > 0) {
-        setBalance(balanceResponse.data[0].balance_disponible);
-      } else {
-        setBalance(0);
-      }
+      setSuscripciones(susRes.data);
+      setTotalGastos(gastosRes.data[0]?.total_gastos || 0);
+      setBalance(balRes.data[0]?.balance_disponible || 0);
 
     } catch (error) {
       console.error('Error al obtener datos:', error);
@@ -56,9 +58,7 @@ function Inicio() {
   };
 
   useEffect(() => {
-    if (userId) {
-      obtenerDatos();
-    }
+    if (userId) obtenerDatos();
   }, [userId]);
 
   const handleLogout = () => {
@@ -67,11 +67,7 @@ function Inicio() {
   };
 
   const actualizarIngreso = async () => {
-    if (!nuevoIngreso) {
-      alert('Debes ingresar tu salario');
-      return;
-    }
-
+    if (!nuevoIngreso) return alert('Debes ingresar tu salario');
     try {
       await axios.put(`https://kashhost.onrender.com/auth/usuarios/${userId}/ingreso`, { ingreso: nuevoIngreso });
       alert('Ingreso actualizado correctamente');
@@ -84,8 +80,7 @@ function Inicio() {
   };
 
   const handleEliminar = async (idsusc) => {
-    if (!window.confirm('¿Estás seguro de eliminar esta suscripción?')) return;
-
+    if (!window.confirm('¿Eliminar esta suscripción?')) return;
     try {
       await axios.delete(`https://kashhost.onrender.com/auth/suscripciones/${idsusc}`);
       alert('Suscripción eliminada correctamente');
@@ -95,16 +90,15 @@ function Inicio() {
     }
   };
 
-  const handleEditar = (suscripcion) => {
-    setEditarId(suscripcion.idsusc);
-    setFormData({
-      nombresus: suscripcion.nombresus,
-      monto: suscripcion.monto,
-      diasSus: suscripcion.diasSus,
-      fechaVencimiento: suscripcion.fechaVencimiento,
-      categoria: suscripcion.categoria
-    });
+  const handleEditar = (sus) => {
+    const fechaFormateada = sus.fechaVencimiento
+      ? new Date(sus.fechaVencimiento).toISOString().split('T')[0]
+      : '';
+    setEditarId(sus.idsusc);
+    setFormData({ ...sus, fechaVencimiento: fechaFormateada });
   };
+  
+  
 
   const guardarEdicion = async () => {
     try {
@@ -117,104 +111,153 @@ function Inicio() {
     }
   };
 
+  const resumenPorCategoria = () => {
+    const categorias = {};
+    suscripciones.forEach((s) => {
+      if (!categorias[s.categoria]) categorias[s.categoria] = 0;
+      categorias[s.categoria] += parseFloat(s.monto);
+    });
+    return Object.entries(categorias).map(([categoria, valor]) => ({
+      categoria,
+      valor
+    }));
+  };
+
   return (
-    <div>
-      <h1>Inicio</h1>
-      <button onClick={handleLogout}>Cerrar Sesión</button>
+    <div id="inicio-dashboard">
+      <header id="dashboard-header">
+        <h1>Panel de Finanzas Personales</h1>
+        <button onClick={handleLogout} id="logout-button">Cerrar Sesión</button>
+      </header>
 
       {mostrarResumen && (
-        <div style={modalStyle}>
-          <div style={modalContentStyle}>
+        <div id="resumen-modal">
+          <div className="resumen-content">
             <h2>Resumen Financiero</h2>
             <p><strong>Ingreso:</strong> ${ingreso}</p>
             <p><strong>Total de Gastos:</strong> ${totalGastos}</p>
             <p><strong>Balance Disponible:</strong> ${balance}</p>
-            <h3>Suscripciones:</h3>
-            <ul>
-              {suscripciones.map(s => (
-                <li key={s.idsusc}>
-                  {s.nombresus} - ${s.monto} - {s.categoria} - Vence: {s.fechaVencimiento}
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => setMostrarResumen(false)}>Cerrar</button>
+
+            <h3>Gastos por Suscripción</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={suscripciones}>
+                <XAxis dataKey="nombresus" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="monto" fill="#3f72af" />
+              </BarChart>
+            </ResponsiveContainer>
+
+            <h3>Distribución por Categoría</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={resumenPorCategoria()}
+                  dataKey="valor"
+                  nameKey="categoria"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#112d4e"
+                  label
+                />
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+
+            <button onClick={() => setMostrarResumen(false)} className="cerrar-modal">Cerrar</button>
           </div>
         </div>
       )}
 
-      <div style={{ marginTop: '20px' }}>
+      <section id="ingreso-section">
+        <h2>Ingreso Mensual</h2>
         {obligarIngreso ? (
-          <div>
-            <h2>¡Aún no ingresas tu salario!</h2>
-            <input
-              type="number"
-              value={nuevoIngreso}
-              onChange={(e) => setNuevoIngreso(e.target.value)}
-              placeholder="Ingresa tu salario"
-            />
+          <div id="ingreso-form">
+            <input type="number" value={nuevoIngreso} onChange={(e) => setNuevoIngreso(e.target.value)} placeholder="Ingresa tu salario" />
             <button onClick={actualizarIngreso}>Guardar Ingreso</button>
           </div>
         ) : (
-          <div>
-            <h2>Tu ingreso actual es: ${ingreso}</h2>
-            <input
-              type="number"
-              value={nuevoIngreso}
-              onChange={(e) => setNuevoIngreso(e.target.value)}
-              placeholder="Actualizar ingreso"
-            />
-            <button onClick={actualizarIngreso}>Actualizar Ingreso</button>
+          <div id="ingreso-actual">
+            <p><strong>Ingreso actual:</strong> ${ingreso}</p>
+            <input type="number" value={nuevoIngreso} onChange={(e) => setNuevoIngreso(e.target.value)} placeholder="Actualizar ingreso" />
+            <button onClick={actualizarIngreso}>Actualizar</button>
           </div>
         )}
-      </div>
+      </section>
 
-      <div style={{ marginTop: '20px' }}>
-        <h2>Suscripciones</h2>
-        {suscripciones.length > 0 ? (
-          <ul>
-            {suscripciones.map((suscripcion) => (
-              <li key={suscripcion.idsusc}>
-                {editarId === suscripcion.idsusc ? (
-                  <div>
-                    <input type="text" value={formData.nombresus}
-                      onChange={(e) => setFormData({ ...formData, nombresus: e.target.value })} />
-                    <input type="number" value={formData.monto}
-                      onChange={(e) => setFormData({ ...formData, monto: e.target.value })} />
-                    <input type="number" value={formData.diasSus}
-                      onChange={(e) => setFormData({ ...formData, diasSus: e.target.value })} />
-                    <input type="date" value={formData.fechaVencimiento}
-                      onChange={(e) => setFormData({ ...formData, fechaVencimiento: e.target.value })} />
-                    <input type="text" value={formData.categoria}
-                      onChange={(e) => setFormData({ ...formData, categoria: e.target.value })} />
-                    <button onClick={guardarEdicion}>Guardar</button>
-                    <button onClick={() => setEditarId(null)}>Cancelar</button>
-                  </div>
-                ) : (
-                  <div>
-                    <strong>{suscripcion.nombresus}</strong> - ${suscripcion.monto} - {suscripcion.categoria} - Vence: {suscripcion.fechaVencimiento}
-                    <button onClick={() => handleEditar(suscripcion)}>Editar</button>
-                    <button onClick={() => handleEliminar(suscripcion.idsusc)}>Eliminar</button>
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No tienes suscripciones activas.</p>
-        )}
+      <section id="suscripciones-section">
+        <h2>Suscripciones Activas</h2>
+        {suscripciones.length ? (
+          <div className="tabla-responsiva">
+            <table className="tabla-suscripciones">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Monto</th>
+                  <th>Días</th>
+                  <th>Fecha de Vencimiento</th>
+                  <th>Categoría</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {suscripciones.map((s) => (
+                  <tr key={s.idsusc}>
+                    {editarId === s.idsusc ? (
+                      <>
+                        <td><input type="text" value={formData.nombresus} onChange={(e) => setFormData({ ...formData, nombresus: e.target.value })} /></td>
+                        <td><input type="number" value={formData.monto} onChange={(e) => setFormData({ ...formData, monto: e.target.value })} /></td>
+                        <td><input type="number" value={formData.diasSus} onChange={(e) => setFormData({ ...formData, diasSus: e.target.value })} /></td>
+                        <td><input
+  type="date"
+  value={
+    formData.fechaVencimiento
+      ? new Date(formData.fechaVencimiento).toISOString().split('T')[0]
+      : ''
+  }
+  onChange={(e) =>
+    setFormData({ ...formData, fechaVencimiento: e.target.value })
+  }
+/>
+</td>
+                        <td><input type="text" value={formData.categoria} onChange={(e) => setFormData({ ...formData, categoria: e.target.value })} /></td>
+                        <td>
+                          <button onClick={guardarEdicion}>Guardar</button>
+                          <button onClick={() => setEditarId(null)}>Cancelar</button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td>{s.nombresus}</td>
+                        <td>${s.monto}</td>
+                        <td>{s.diasSus}</td>
+                        <td>{new Date(s.fechaVencimiento).toISOString().split('T')[0]}</td>
+                        <td>{s.categoria}</td>
+                        <td>
+                          <button onClick={() => handleEditar(s)}>Editar</button>
+                          <button onClick={() => handleEliminar(s.idsusc)}>Eliminar</button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : <p>No tienes suscripciones activas.</p>}
+      </section>
 
-        <div style={{ marginTop: '20px' }}>
-          <h3>Total de gastos: ${totalGastos}</h3>
-          <h3>Balance disponible: ${balance}</h3>
+      <section id="resumen-section">
+        <div className="resumen-card">🤑 Total Gastos: <span>${totalGastos}</span></div>
+        <div className="resumen-card">💰 Balance Disponible: <span>${balance}</span></div>
+        <div className="acciones-botones">
+          <button onClick={() => navigate('/FormSuscripcion')} className="boton-principal">Agregar Suscripción</button>
+          <button onClick={() => setMostrarResumen(true)} className="boton-secundario">Ver Resumen</button>
         </div>
-
-        <button onClick={() => navigate('/FormSuscripcion')} className='botonLogin1'>Agregar Suscripción</button>
-        <button onClick={() => setMostrarResumen(true)} style={{ marginLeft: '10px' }}>Ver Resumen</button>
-      </div>
+      </section>
     </div>
   );
 }
-
-
-
 export default Inicio;

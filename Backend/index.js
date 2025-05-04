@@ -3,7 +3,6 @@ import cors from 'cors';
 import { userRouter } from './Routes/usuariosR.js';
 import cookieParser from 'cookie-parser';
 
-
 const app = express();
 
 app.use(cors({

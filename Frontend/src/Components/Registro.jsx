@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-
+import './DOCSS/Registro.css';
+import logo from '../ImagenesP/ImagenesLogin/Logo.png';
 
 const Registro = () => {
     const [values, setValues] = useState({
@@ -23,7 +23,6 @@ const Registro = () => {
         event.preventDefault();
         setError(null);
 
-        // Validaciones de campos
         if (!values.nombre_completo || !values.email || !values.password || !values.confirmPassword) {
             setError("Todos los campos son obligatorios");
             return;
@@ -60,6 +59,10 @@ const Registro = () => {
     };
 
     return (
+        <div>
+         <div className="logoTopRight">
+           <img src={logo} alt="Logo" />
+         </div>
         <div className="registro-container">
             
 
@@ -68,30 +71,33 @@ const Registro = () => {
             <form onSubmit={handleSubmit} className='form-container'>
                 <div>
                 
-                <h2>Página de Registro</h2>
+                <h2><strong>Registrate</strong></h2>
                 
                 </div>
                 
-                <label>Nombre Completo</label>
+                <label><strong>Nombre de Usuario</strong></label>
                 <input 
                     type="text"
+                    placeholder='Ingresa Un nombre de usuario'
                     value={values.nombre_completo}
                     onChange={(e) => setValues({ ...values, nombre_completo: e.target.value })} 
                     required
                 />
 
-                <label>Email</label>
+                <label><strong>Email</strong></label>
                 <input 
                     type="email"
+                    placeholder='Ingresa Email'
                     value={values.email}
                     onChange={(e) => setValues({ ...values, email: e.target.value })} 
                     required
                 />
 
-                <label>Contraseña</label>
+                <label><strong>Contraseña</strong></label>
                 <div className="password-container">
                     <input 
                         type={showPassword ? 'text' : 'password'} 
+                        placeholder='Ingresa la contraseña'
                         value={values.password}
                         onChange={(e) => setValues({ ...values, password: e.target.value })} 
                         required
@@ -107,6 +113,7 @@ const Registro = () => {
                 <label>Confirmar Contraseña</label>
                 <div className="password-container">
                     <input 
+                        placeholder='Confirma la contraseña'
                         type={showConfirmPassword ? 'text' : 'password'} 
                         value={values.confirmPassword}
                         onChange={(e) => setValues({ ...values, confirmPassword: e.target.value })} 
@@ -121,8 +128,16 @@ const Registro = () => {
                 </div>
 
                 <button type="submit">Registrarse</button>
-                <button onClick={() => navigate('/')} className='botonLogin1'>Ir a Login</button>
+                <button 
+                    type="button" 
+                    onClick={() => navigate('/userlogin')} 
+                    className='botonLogin1'
+                >
+                    Ir a Login
+                </button>
+
             </form>
+        </div>
         </div>
     );
 };

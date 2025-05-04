@@ -1,100 +1,130 @@
 .registro-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    overflow: auto;
-    -webkit-backdrop-filter: blur(1px); 
-    backdrop-filter: blur(1px); 
+    align-items: center;
+    height: 100vh;
     padding: 20px;
-    font-family: 'Arial', sans-serif;
-    background: url("../../ImagenesP/ImagenesLogin/FONDOLOGINHOME.png") no-repeat center center fixed;
+    background: url("../../ImagenesP/ImagenesLogin/FONDOIMG.png") no-repeat center center fixed;
     background-size: cover;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
 }
+
 
 .form-container {
     background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    padding: 40px;
     width: 100%;
     max-width: 420px;
     text-align: center;
-    margin-top: 30px; /* Separación del borde superior */
-}
-
-/* Diseño para la selección de rol */
-.select-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    background-color: rgba(0, 123, 255, 0.1);
-    padding: 10px;
-    border-radius: 6px;
+    flex-direction: column;
+    gap: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-label {
-    font-weight: bold;
+.form-container:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+}
+
+.form-container h2 {
+    color: #001d3c;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.form-container label {
+    font-weight: 600;
     color: #333;
-    margin-bottom: 5px;
+    text-align: left;
+    font-size: 15px;
+    margin-bottom: 4px;
 }
 
-select {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* Para que los campos no estén pegados */
-input {
+.form-container input {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px 14px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
     font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
 }
 
-button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-}
-
-button[type="submit"]:hover {
-    background-color: #0056b3;
+.form-container input:focus {
+    border-color: #001d3c;
+    box-shadow: 0 0 6px rgba(0, 29, 60, 0.5);
+    outline: none;
 }
 
 .password-container {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
-    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
 }
 
 .password-container input {
     flex: 1;
-    border: none;
-    outline: none;
-    padding: 8px;
-    font-size: 16px;
 }
 
-.password-toggle {
+.password-container button {
+    background: none;
+    border: none;
     cursor: pointer;
-    font-size: 18px;
-    color: #555;
-    margin-left: 8px;
+    font-size: 20px;
+    color: #001d3c;
+    transition: color 0.3s ease;
+}
+
+.password-container button:hover {
+    color: #06709d;
+}
+
+.form-container button[type="submit"] {
+    background-color: #001d3c;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-container button[type="submit"]:hover {
+    background-color: #06709d;
+    transform: translateY(-2px);
+}
+
+
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 25px;
+        max-width: 90%;
+    }
+
+    .form-container h2 {
+        font-size: 24px;
+    }
+
+    .form-container input {
+        padding: 10px;
+    }
+
+    .form-container button[type="submit"] {
+        font-size: 15px;
+    }
 }
